@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model event {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  eventType String   @db.VarChar(100)
+  startTime DateTime @db.Timestamptz(6)
+  endTime   DateTime @db.Timestamptz(6)
+}
+
+model likes {
+  id                       Int  @id @default(autoincrement())
+  likerId                  Int
+  likedId                  Int
+  user_likes_likedIdTouser user @relation("likes_likedIdTouser", fields: [likedId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_likes_likerIdTouser user @relation("likes_likerIdTouser", fields: [likerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model mentorMeet {
+  id                               Int      @id @default(autoincrement())
+  residentId                       Int
+  mentorId                         Int
+  link                             String
+  startTime                        DateTime @db.Timestamptz(6)
+  endTime                          DateTime @db.Timestamptz(6)
+  user_mentorMeet_mentorIdTouser   user     @relation("mentorMeet_mentorIdTouser", fields: [mentorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_mentorMeet_residentIdTouser user     @relation("mentorMeet_residentIdTouser", fields: [residentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model session {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  token  String
+  user   user   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user {
+  id                                     Int          @id @default(autoincrement())
+  email                                  String       @unique @db.VarChar(100)
+  name                                   String       @db.VarChar(100)
+  password                               String       @db.VarChar(100)
+  course                                 String       @db.VarChar(100)
+  image                                  Bytes
+  category                               String       @db.VarChar(50)
+  likes_likes_likedIdTouser              likes[]      @relation("likes_likedIdTouser")
+  likes_likes_likerIdTouser              likes[]      @relation("likes_likerIdTouser")
+  mentorMeet_mentorMeet_mentorIdTouser   mentorMeet[] @relation("mentorMeet_mentorIdTouser")
+  mentorMeet_mentorMeet_residentIdTouser mentorMeet[] @relation("mentorMeet_residentIdTouser")
+  session                                session[]
+}
