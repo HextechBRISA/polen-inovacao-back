@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import cors from "cors";
 import { connectDb, disconnectDB, loadEnv } from "./config";
-import { userRouter } from "./routes/user-router";
+import { authRouter, userRouter } from "@/routes";
 
 loadEnv();
 
@@ -11,7 +11,8 @@ app
   .use(cors())
   .use(express.json({ limit: "10mb" }))
   .get("/status", (_req, res) => res.send("OK!"))
-  .use("/api/sign-up", userRouter);
+  .use("/api/sign-up", userRouter)
+  .use("/api/login", authRouter);
 
 export const init = (): Promise<Express> => {
   connectDb();

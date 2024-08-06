@@ -1,11 +1,13 @@
-import userService from "@/service/user-service";
+import userService, { CreateUserParams } from "@/service/user-service";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 
 export const postUser = async (req: Request, res: Response) => {
-  const { name, email, password, image, course, category } = req.body;
+  const { name, email, password, image, course, category } = req.body as CreateUserParams;
+
+  const imageString = image as unknown as string;
   
-  const imageBuffer = Buffer.from(image.split(",")[1], "base64");
+  const imageBuffer = Buffer.from(imageString.split(",")[1], "base64");
 
   try {
     await userService.createUser({ name, email, password, image: imageBuffer, course, category });
