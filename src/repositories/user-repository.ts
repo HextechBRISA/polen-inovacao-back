@@ -21,9 +21,14 @@ const create = async (data: Prisma.userUncheckedCreateInput) => {
   });
 };
 
+const read = async () => {
+  return prisma.user.findMany();
+};
+
 const userRepository = {
   findByEmail,
-  create
+  create,
+  read
 };
 
 export default userRepository;

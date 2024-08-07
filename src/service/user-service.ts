@@ -22,8 +22,15 @@ export const createUser = async ({ name, email, password, image, course, categor
   });
 };
 
+const readUsers = async (): Promise<user[]> => {
+  const result = await userRepository.read();
+
+  return result;
+};
+
 const userService = {
   createUser,
+  readUsers
 };
 
 export default userService;

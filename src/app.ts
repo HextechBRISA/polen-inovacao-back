@@ -8,10 +8,9 @@ loadEnv();
 const app = express();
 app
   .use(cors())
-  .use(cors())
   .use(express.json({ limit: "10mb" }))
   .get("/status", (_req, res) => res.send("OK!"))
-  .use("/api/sign-up", userRouter)
+  .use("/api/user", userRouter)
   .use("/api/login", authRouter);
 
 export const init = (): Promise<Express> => {
