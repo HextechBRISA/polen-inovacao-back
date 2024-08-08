@@ -28,9 +28,18 @@ const readUsers = async (): Promise<user[]> => {
   return result;
 };
 
+const readUserById = async (userId: number): Promise<user> => {
+  const result = await userRepository.readById(userId);
+
+  if (!result) throw requestError("NotFoundError");
+
+  return result;
+};
+
 const userService = {
   createUser,
-  readUsers
+  readUsers,
+  readUserById
 };
 
 export default userService;

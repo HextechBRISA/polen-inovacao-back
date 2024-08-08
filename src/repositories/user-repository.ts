@@ -25,10 +25,19 @@ const read = async () => {
   return prisma.user.findMany();
 };
 
+const readById = async (userId: number) => {
+  return prisma.user.findFirst({
+    where: {
+      id: userId,
+    }
+  });
+};
+
 const userRepository = {
   findByEmail,
   create,
-  read
+  read,
+  readById
 };
 
 export default userRepository;
