@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../config/index";
 import { Prisma } from "@prisma/client";
 
 const create = async (data: Prisma.sessionUncheckedCreateInput) => {

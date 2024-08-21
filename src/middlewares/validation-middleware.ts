@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
+import * as httpStatus from "http-status";
 import { ZodSchema, ZodError } from "zod";
 
 type ValidationMiddleware = (req: Request, res: Response, next: NextFunction)=> void;

@@ -1,9 +1,9 @@
-import { requestError } from "@/errors/request-error";
-import userRepository from "@/repositories/user-repository";
+import { requestError } from "../errors/request-error";
+import userRepository from "../repositories/user-repository";
 import { user } from "@prisma/client";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 
-export type CreateUserParams = Omit<user, "id"> 
+export type CreateUserParams = Omit<user, "id">;
 
 export const createUser = async ({ name, email, password, image, course, category }: CreateUserParams): Promise<user> => {
   const emailExists = await userRepository.findByEmail(email);
@@ -23,17 +23,15 @@ export const createUser = async ({ name, email, password, image, course, categor
 };
 
 const readUsers = async (): Promise<user[]> => {
-  const result = await userRepository.read();
-
-  return result;
+  return userRepository.read();
 };
 
 const readUserById = async (userId: number): Promise<user> => {
-  const result = await userRepository.readById(userId);
+  const user = await userRepository.readById(userId);
 
-  if (!result) throw requestError("NotFoundError");
+  if (!user) throw requestError("NotFoundError");
 
-  return result;
+  return user;
 };
 
 const userService = {

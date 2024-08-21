@@ -1,4 +1,4 @@
-import { RequestError } from "@/protocols";
+import { RequestError } from "../protocols";
 
 type ApplicationInvalidateDataError = RequestError & {
   details: string[];

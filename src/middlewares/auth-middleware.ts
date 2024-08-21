@@ -1,13 +1,11 @@
-import { prisma } from "@/config";
+import { prisma } from "../config/index";
 import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
+import * as httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 
-export type AuthenticatedRequest = Request & JWTPayload;
-
-type JWTPayload = {
-  userId: number;
-};
+export interface AuthenticatedRequest extends Request {
+  userId?: number;
+}
 
 export const authToken = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
@@ -16,17 +14,19 @@ export const authToken = async (req: AuthenticatedRequest, res: Response, next: 
   if (!token) return generateUnauthorizedResponse(res);
 
   try {
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error("JWT secret is not defined");
+    }
 
-    const session = await prisma.session.findFirst({
-      where: {
-        token,
-      }
-    });
+    const { userId } = jwt.verify(token, secret) as { userId: number };
+
+    const session = await prisma.session.findFirst({ where: { token } });
 
     if (!session) return generateUnauthorizedResponse(res);
 
     req.userId = userId;
+
     return next();
   } catch (error) {
     return generateUnauthorizedResponse(res);
@@ -34,5 +34,5 @@ export const authToken = async (req: AuthenticatedRequest, res: Response, next: 
 };
 
 const generateUnauthorizedResponse = (res: Response) => {
-  res.status(httpStatus.UNAUTHORIZED).send("You must be signed in to continue");
+  return res.status(httpStatus.UNAUTHORIZED).send("You must be signed in to continue");
 };

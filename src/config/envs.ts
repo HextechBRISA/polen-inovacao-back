@@ -1,5 +1,6 @@
-import  dotenv from "dotenv";
-import dotenvExpand from "dotenv-expand";
+import * as dotenv from "dotenv";
+dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
 
 export const loadEnv = () => {
   const path = 

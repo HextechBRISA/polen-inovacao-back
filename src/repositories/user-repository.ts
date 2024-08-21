@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../config/index";
 import { Prisma } from "@prisma/client";
 
 const findByEmail = async (email: string, select?: Prisma.userSelect) => {
