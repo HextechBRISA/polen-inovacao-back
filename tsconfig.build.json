@@ -4,7 +4,11 @@
     "outDir": "./dist",
     "module": "commonjs",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["tests", "node_modules", "dist"]
