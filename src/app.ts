@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import cors from "cors";
 import { connectDb, disconnectDB, loadEnv } from "./config/index";
 import { authRouter, userRouter } from "./routes/index";
-import "module-alias/register";
 
 loadEnv();
 
